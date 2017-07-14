@@ -14,7 +14,7 @@ const {MongoClient, ObjectID} = require('mongodb');
 
 //connection method, 1st argument is a string of local host url and db (no need to create database first
 //, 2nd callback function
-MongoClient.connect('mongodb://localhost:27017/ToDoApp', (err, db) => {
+MongoClient.connect('mongodb://localhost:27017/zoo', (err, db) => {
     if (err) {
         //return just prevents from rest of function continuing (alternative is to add else clause)
        return console.log('Unable to connect to MongoDB server');
