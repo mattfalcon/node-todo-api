@@ -35,10 +35,27 @@ app.post('/todos', (req, res) => {
     // console.log(req.body);
 });
 
+//list of all todos
+app.get('/todos', (req, res) => {
+    //return everything without authentication
+    //then call takes two functions with all of todos
+    Todo.find().then((todos) => {      
+    //send information back with object
+        res.send({todos});
+    //error handler
+}, (e) => {
+    res.status(400).send(e);
+})
+})
+
+
 //listen on a port 
 app.listen(3000, () => {
     console.log('Started on port 3000');
 })
+
+//server.js export app property = app variable
+module.exports = {app};
 
 //============EXAMPLES OF CREATE TODOS==============
 // //create instances 
@@ -65,4 +82,5 @@ app.listen(3000, () => {
 //     console.log('Unable to save', e)
 // });
 //-----------------------------------------------------
+
 
