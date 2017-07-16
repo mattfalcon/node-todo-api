@@ -1,6 +1,9 @@
+
+
 //library imports and local imports
 var express = require('express');
 var bodyParser = require('body-parser');
+var {ObjectID} = require('mongodb');
 
 //required mongoose config, ES6 destructuring 
 //local variable called mongoose = return result
@@ -12,6 +15,10 @@ var {User} = require('./models/user');
 
 //store express application
 var app = express();
+
+//set if app is running on heroku
+const port = process.env.PORT || 3000;
+
 
 //configure middleware
 app.use(bodyParser.json());
@@ -48,10 +55,39 @@ app.get('/todos', (req, res) => {
 })
 })
 
+//GET /TODOS/1234324
+//call app.get passing in url 
+//url parameter : followed by name (creates id variable on request object)
+app.get('/todos/:id', (req, res) => {
+    //req.params object with key object pairs
+     var id = req.params.id;
+    //validate id using isValid
+     if (!ObjectID.isValid(id)) {
+         return res.status(404).send();
+     }
+     Todo.findById(id).then((todo) => {
+        if (!todo) {
+            return res.status(404).send();
+        }
+        res.send({todo});
+     }).catch((e) => {
+         res.status(400).send();
+     })
+      //if not valid stop execution function and 
+        // 404
+     //findbyID 
+        //success 
+            //if todo - send it back
+            // if n todo - send back 404 empty body
+        //error
+            //400 - and send empty body back
+
+});
+
 
 //listen on a port 
-app.listen(3000, () => {
-    console.log('Started on port 3000');
+app.listen(port, () => {
+    console.log(`Started up at port ${port}`);
 })
 
 //server.js export app property = app variable
